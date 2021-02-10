@@ -1,11 +1,12 @@
 {
-    "project_name": "Project name",
-    "client_name": "Client name",
-    "review_period": "2 weeks",
-    "date_interval": "October 15 to November 15, 2020",
-    "person_days": "5",
-    "template": "./Readme.md.mustache",
-    "date": "February 2021",
+    "client_name": "Indexed Finance",
     "commit_hash": "e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6",
-    "source_repository": "https://github.com/indexed-finance/sigma-core"
+    "date": "February 2021",
+    "date_interval": "February 11, 2021",
+    "issues": [],
+    "person_days": "2",
+    "project_name": "Sigma Comittee",
+    "review_period": "1 day",
+    "source_repository": "https://github.com/indexed-finance/sigma-core",
+    "template": "./Readme.md.mustache"
 }
