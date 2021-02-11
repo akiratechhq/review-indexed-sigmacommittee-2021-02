@@ -5,7 +5,7 @@
           </span>
           <br />
           <span id="project-value">
-               Sigma Comittee
+               Sigma Committee
           </span>
     </div>
      <div id="details">
@@ -67,7 +67,7 @@
 - **Date** February 2021
 - **Lead reviewer** Daniel Luca (@cleanunicorn)
 - **Reviewers** Daniel Luca (@cleanunicorn), Andrei Simion (@andreiashu)
-- **Repository**: [Sigma Comittee](https://github.com/indexed-finance/sigma-core)
+- **Repository**: [Sigma Committee](https://github.com/indexed-finance/sigma-core)
 - **Commit hash** `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`
 - **Technologies**
   - Solidity
@@ -84,7 +84,7 @@
 
 ## Executive summary
 
-This report represents the results of the engagement with **Indexed Finance** to review **Sigma Comittee**.
+This report represents the results of the engagement with **Indexed Finance** to review **Sigma Committee**.
 
 The review was conducted over the course of **1 day** on **February 11, 2021**. A total of **2 person-days** were spent reviewing the code.
 
@@ -108,8 +108,10 @@ Recordings:
 Documentation: 
 - [Code changes summary][Code changes summary]
 - [Forum proposal][Forum proposal]
+- [IIP 4: Sigma Pilot Snapshot Proposal][IIP4]
+- [IIP 4: Sigma Pilot Thread][IIP4 Thread]
 
-The initial review focused on the [Sigma Comittee](https://github.com/indexed-finance/sigma-core) identified by the commit hash `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`. ...
+The initial review focused on the [Sigma Committee](https://github.com/indexed-finance/sigma-core) identified by the commit hash `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`. ...
 
 <!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, gas costly patterns, architectural problems, code readability. -->
 
@@ -124,6 +126,8 @@ The initial review focused on the [Sigma Comittee](https://github.com/indexed-fi
 [Code changes summary]: https://hackmd.io/WDQtAVf5Qwe5VfSw03VgAQ "Code changes summary"
 [Forum proposal]: https://forum.indexed.finance/t/overview-of-changes-to-smart-contracts/171 "Forum proposal"
 [Kickoff call]: https://us02web.zoom.us/rec/share/ViV5h5HDjYxWf67tb1wZ6jc6jnNlpGgYWehijbO5sryil6gS1ozus-T_P8d43lI.Jf10udDPfAcjQnoI
+[IIP4]: https://snapshot.page/#/ndx.eth/proposal/QmbneygJdeXFNzxrtVw7CTZAgLUwPBfxrCBzucefuWC1Q8 "IIP 4: Sigma Pilot"
+[IIP4 Thread]: https://forum.indexed.finance/t/iip-4-sigma-pilot/74 "IIP 4: Sigma Pilot Thread"
 
 ## Recommendations
 
@@ -132,7 +136,7 @@ We identified a few possible general improvements that are not security issues d
 ## Issues
 
 
-### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacomittee-2021-02/issues/1)
+### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
 
 **Description**
