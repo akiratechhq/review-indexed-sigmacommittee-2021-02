@@ -5,7 +5,7 @@
           </span>
           <br />
           <span id="project-value">
-               Sigma Committee
+               Sigma Comittee
           </span>
     </div>
      <div id="details">
@@ -53,6 +53,8 @@
  - [Scope](#scope)
  - [Recommendations](#recommendations)
  - [Issues](#issues)
+     - [[CommitteeTimelock] - Can omit the events from the contract implementation](#committeetimelock---can-omit-the-events-from-the-contract-implementation)
+     - [[WIP] [ContractName] - txHash does not uniquely identify an action](#wip-contractname---txhash-does-not-uniquely-identify-an-action)
      - [[CommitteeTimelock] - update require err message to reflect condition](#committeetimelock---update-require-err-message-to-reflect-condition)
  - [Artifacts](#artifacts)
      - [Sūrya](#surya)
@@ -67,7 +69,7 @@
 - **Date** February 2021
 - **Lead reviewer** Daniel Luca (@cleanunicorn)
 - **Reviewers** Daniel Luca (@cleanunicorn), Andrei Simion (@andreiashu)
-- **Repository**: [Sigma Committee](https://github.com/indexed-finance/sigma-core)
+- **Repository**: [Sigma Comittee](https://github.com/indexed-finance/sigma-core)
 - **Commit hash** `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`
 - **Technologies**
   - Solidity
@@ -77,14 +79,14 @@
 
 | SEVERITY       |    OPEN    |    CLOSED    |
 |----------------|:----------:|:------------:|
-|  Informational  |  1  |  0  |
-|  Minor  |  0  |  0  |
+|  Informational  |  2  |  0  |
+|  Minor  |  1  |  0  |
 |  Medium  |  0  |  0  |
 |  Major  |  0  |  0  |
 
 ## Executive summary
 
-This report represents the results of the engagement with **Indexed Finance** to review **Sigma Committee**.
+This report represents the results of the engagement with **Indexed Finance** to review **Sigma Comittee**.
 
 The review was conducted over the course of **1 day** on **February 11, 2021**. A total of **2 person-days** were spent reviewing the code.
 
@@ -102,6 +104,7 @@ The second week was ...
 
 Recordings:
 - [Kickoff call][Kickoff call] password: `C#w%d6CX`
+- [Sync #1][Sync #1] password: `TKmx2?9r`
 
 ## Scope
 
@@ -111,7 +114,7 @@ Documentation:
 - [IIP 4: Sigma Pilot Snapshot Proposal][IIP4]
 - [IIP 4: Sigma Pilot Thread][IIP4 Thread]
 
-The initial review focused on the [Sigma Committee](https://github.com/indexed-finance/sigma-core) identified by the commit hash `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`. ...
+The initial review focused on the [Sigma Comittee](https://github.com/indexed-finance/sigma-core) identified by the commit hash `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`. ...
 
 <!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, gas costly patterns, architectural problems, code readability. -->
 
@@ -126,6 +129,7 @@ The initial review focused on the [Sigma Committee](https://github.com/indexed-f
 [Code changes summary]: https://hackmd.io/WDQtAVf5Qwe5VfSw03VgAQ "Code changes summary"
 [Forum proposal]: https://forum.indexed.finance/t/overview-of-changes-to-smart-contracts/171 "Forum proposal"
 [Kickoff call]: https://us02web.zoom.us/rec/share/ViV5h5HDjYxWf67tb1wZ6jc6jnNlpGgYWehijbO5sryil6gS1ozus-T_P8d43lI.Jf10udDPfAcjQnoI
+[Sync #1]: https://us02web.zoom.us/rec/share/8B34_UCeybBdgPW9qgn9Tj1O-bmES7mLDDgD4ihMuCiwABmKD1Ugt09iesLlc604.ql4AhVJk8dtO5hM6
 [IIP4]: https://snapshot.page/#/ndx.eth/proposal/QmbneygJdeXFNzxrtVw7CTZAgLUwPBfxrCBzucefuWC1Q8 "IIP 4: Sigma Pilot"
 [IIP4 Thread]: https://forum.indexed.finance/t/iip-4-sigma-pilot/74 "IIP 4: Sigma Pilot Thread"
 
@@ -134,6 +138,149 @@ The initial review focused on the [Sigma Committee](https://github.com/indexed-f
 We identified a few possible general improvements that are not security issues during the review, which will bring value to the developers and the community reviewing and using the product.
 
 ## Issues
+
+
+### [[CommitteeTimelock] - Can omit the events from the contract implementation](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/2)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
+
+**Description**
+
+The `CommitteeTimelock` is defined as an extension of the `ICommitteeTimelock` interface. The interface defines a set of events.
+
+
+[code/contracts/interfaces/ICommitteeTimelock.sol#L5-L31](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/ed374bd8bbd948f78a4661182092c6c0a90baec9/code/contracts/interfaces/ICommitteeTimelock.sol#L5-L31)
+```solidity
+  event NewAdmin(address indexed newAdmin);
+  event NewPendingAdmin(address indexed newPendingAdmin);
+  event NewDelay(uint256 indexed newDelay);
+  event CancelTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+  event ExecuteTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+  event QueueTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+```
+
+
+And the `CommitteeTimelock` implementation redefines the same set of events.
+
+
+[code/contracts/committee/CommitteeTimelock.sol#L21-L47](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/ed374bd8bbd948f78a4661182092c6c0a90baec9/code/contracts/committee/CommitteeTimelock.sol#L21-L47)
+```solidity
+  event NewAdmin(address indexed newAdmin);
+  event NewPendingAdmin(address indexed newPendingAdmin);
+  event NewDelay(uint256 indexed newDelay);
+  event CancelTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+  event ExecuteTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+  event QueueTransaction(
+    bytes32 indexed txHash,
+    address indexed target,
+    uint256 value,
+    string signature,
+    bytes data,
+    uint256 eta
+  );
+```
+
+
+This isn't necessary, and the event definition can be omitted in the implementation. This also protects from defining almost the same event with different arguments, or typos.
+
+Solidity allows the definition and the emission of events that share the same name but have a different `topic` and arguments.
+
+i.e.,
+
+```solidity
+interface IWithEvent {
+    event TheEvent(uint n);
+}
+
+contract we is IWithEvent {
+    event TheEvent(string n);
+    
+    function emitEvent() public {
+        emit TheEvent(block.number);
+        emit TheEvent("something else");
+    }
+}
+```
+
+`emitEvent()` will emit 2 very diffent events.
+
+```json
+[
+    {
+        "from": "0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3",
+        "topic": "0xd3d703951f7bff25f2e2896e97ba52c506eb73af2e72a1bd8bd2944e596609f8",
+        "event": "TheEvent",
+        "args": {
+            "0": "7",
+            "n": "7"
+        }
+    },
+    {
+        "from": "0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3",
+        "topic": "0x5286c814765d3cf19bf3c71af4bd8d4b1b3a7c6e748b608da0d23b4f83801ed4",
+        "event": "TheEvent",
+        "args": {
+            "0": "something else",
+            "n": "something else"
+        }
+    }
+]
+```
+
+**Recommendation**
+
+Remove the event definition from the `CommitteeTimelock` implementation which should leave you with the events defined in the interface `ICommitteeTimelock`.
+
+
+
+---
+
+
+### [[WIP] [ContractName] - txHash does not uniquely identify an action](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/3)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
+
+**Description**
+
+**Recommendation**
+
+**[optional] References**
+
+
+---
 
 
 ### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
