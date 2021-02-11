@@ -48,11 +48,12 @@
  - [Details](#details)
  - [Issues Summary](#issues-summary)
  - [Executive summary](#executive-summary)
-     - [Week 1](#week-1)
-     - [Week 2](#week-2)
+     - [Day 1](#day-1)
+     - [Day 2](#day-2)
  - [Scope](#scope)
  - [Recommendations](#recommendations)
  - [Issues](#issues)
+     - [[CommitteeTimelock] - update require err message to reflect condition](#committeetimelock---update-require-err-message-to-reflect-condition)
  - [Artifacts](#artifacts)
      - [Sūrya](#surya)
      - [Coverage](#coverage)
@@ -76,7 +77,7 @@
 
 | SEVERITY       |    OPEN    |    CLOSED    |
 |----------------|:----------:|:------------:|
-|  Informational  |  0  |  0  |
+|  Informational  |  1  |  0  |
 |  Minor  |  0  |  0  |
 |  Medium  |  0  |  0  |
 |  Major  |  0  |  0  |
@@ -85,19 +86,28 @@
 
 This report represents the results of the engagement with **Indexed Finance** to review **Sigma Comittee**.
 
-The review was conducted over the course of **1 day** from **February 11, 2021**. A total of **2 person-days** were spent reviewing the code.
+The review was conducted over the course of **1 day** on **February 11, 2021**. A total of **2 person-days** were spent reviewing the code.
 
-### Week 1
+### Day 1
 
-During the first week, we ...
+We started by going through the [initially provided document][Code changes summary] created by the client to have an initial idea about the recent changes.
 
-### Week 2
+We also set up a kickoff call with the client [which was recorded][kickoff call] to go through the general idea of the feature, the setup and the architecture of the system.
+
+We continued to review the code, while creating an overview of the architecture to help us have a better understanding of the whole trust model.
+
+### Day 2
 
 The second week was ...
 
+Recordings:
+- [Kickoff call][Kickoff call] password: `C#w%d6CX`
+
 ## Scope
 
-[Code changes summary](https://hackmd.io/WDQtAVf5Qwe5VfSw03VgAQ)
+Documentation: 
+- [Code changes summary][Code changes summary]
+- [Forum proposal][Forum proposal]
 
 The initial review focused on the [Sigma Comittee](https://github.com/indexed-finance/sigma-core) identified by the commit hash `e3b2bed80e1c467b04d1d6121c06ddfc2e751fb6`. ...
 
@@ -111,14 +121,44 @@ The initial review focused on the [Sigma Comittee](https://github.com/indexed-fi
   - [PR #7](https://github.com/indexed-finance/sigma-core/pull/7)
   - [PR #10](https://github.com/indexed-finance/sigma-core/pull/10)
 
-**Excludes:**
-- BadContract.sol
+[Code changes summary]: https://hackmd.io/WDQtAVf5Qwe5VfSw03VgAQ "Code changes summary"
+[Forum proposal]: https://forum.indexed.finance/t/overview-of-changes-to-smart-contracts/171 "Forum proposal"
+[Kickoff call]: https://us02web.zoom.us/rec/share/ViV5h5HDjYxWf67tb1wZ6jc6jnNlpGgYWehijbO5sryil6gS1ozus-T_P8d43lI.Jf10udDPfAcjQnoI
 
 ## Recommendations
 
 We identified a few possible general improvements that are not security issues during the review, which will bring value to the developers and the community reviewing and using the product.
 
 ## Issues
+
+
+### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacomittee-2021-02/issues/1)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
+
+**Description**
+
+The `require` error message does not mention `superUser` although it's one of the OR conditions in this modifier.
+
+
+[code/contracts/committee/CommitteeTimelock.sol#L59-L65](https://github.com/monoceros-alpha/review-indexed-sigmacomittee-2021-02/blob/4c772f1edb078db49a4b441fe39e6efa6dc7f653/code/contracts/committee/CommitteeTimelock.sol#L59-L65)
+```solidity
+  modifier isAdmin {
+    require(
+      msg.sender == admin || msg.sender == superUser,
+      "CommitteeTimelock::isAdmin: Call must come from admin."
+    );
+    _;
+  }
+```
+
+
+**Recommendation**
+
+Update the error message to: `Call must come from admin or superUser.`
+
+
+
+---
 
 
 ## Artifacts
