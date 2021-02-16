@@ -38,7 +38,13 @@ We continued to review the code, while creating an overview of the architecture 
 
 ### Day 2
 
-The second week was ...
+We realised we don't have a complete understanding of the system and how the components are glued together, and we asked the client for an additional overview of the system, specifically how the the contracts will be deployed. We received an additional document detailing the [deployment and ownership strategy][Deplyment strategy].
+
+We also asked for more time than initially estimated because we needed time to process all provided additional documentation.
+
+### Day 3
+
+During the final day of the review, we finalized clarifying any issues we identified, finalized the bulk of the report and set up a meeting with the client to deliver the report.
 
 Recordings:
 - [Kickoff call][Kickoff call] password: `C#w%d6CX`
@@ -51,10 +57,11 @@ Documentation:
 - [Forum proposal][Forum proposal]
 - [IIP 4: Sigma Pilot Snapshot Proposal][IIP4]
 - [IIP 4: Sigma Pilot Thread][IIP4 Thread]
+- [Deployment strategy][Deplyment strategy]
 
-The initial review focused on the [{{project_name}}]({{source_repository}}) identified by the commit hash `{{commit_hash}}`. ...
+The initial review focused on the [{{project_name}}]({{source_repository}}) identified by the commit hash `{{commit_hash}}`.
 
-<!-- We focused on manually reviewing the codebase, searching for security issues such as, but not limited to re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, gas costly patterns, architectural problems, code readability. -->
+We focused on manually reviewing the codebase, searching for security issues such as, but not limited to re-entrancy problems, transaction ordering, block timestamp dependency, exception handling, call stack depth limitation, integer overflow/underflow, self-destructible contracts, unsecured balance, use of origin, gas costly patterns, architectural problems, code readability.
 
 **Includes:**
 - The pull requests described in the document, specifically:
@@ -67,15 +74,40 @@ The initial review focused on the [{{project_name}}]({{source_repository}}) iden
 {{! Links }}
 [Code changes summary]: https://hackmd.io/WDQtAVf5Qwe5VfSw03VgAQ "Code changes summary"
 [Forum proposal]: https://forum.indexed.finance/t/overview-of-changes-to-smart-contracts/171 "Forum proposal"
+[Deplyment strategy]: https://hackmd.io/@d1ll0n/rkEklV4Wd
 [Kickoff call]: https://us02web.zoom.us/rec/share/ViV5h5HDjYxWf67tb1wZ6jc6jnNlpGgYWehijbO5sryil6gS1ozus-T_P8d43lI.Jf10udDPfAcjQnoI
 [Sync #1]: https://us02web.zoom.us/rec/share/8B34_UCeybBdgPW9qgn9Tj1O-bmES7mLDDgD4ihMuCiwABmKD1Ugt09iesLlc604.ql4AhVJk8dtO5hM6
 [IIP4]: https://snapshot.page/#/ndx.eth/proposal/QmbneygJdeXFNzxrtVw7CTZAgLUwPBfxrCBzucefuWC1Q8 "IIP 4: Sigma Pilot"
 [IIP4 Thread]: https://forum.indexed.finance/t/iip-4-sigma-pilot/74 "IIP 4: Sigma Pilot Thread"
 {{! /Links }}
 
-## Recommendations
+## Trust model
 
-We identified a few possible general improvements that are not security issues during the review, which will bring value to the developers and the community reviewing and using the product.
+We identified a few important parts of the system that hold increased trust and are critical to the system's correctness and well behavior.
+
+### Target execution
+
+Executing a transaction assumes the target will behave in a certain way. Even though Ethereum has an immutable contract system, there are ways to change how a contract behaves.
+
+This can be done by:
+Changing the contract's execution path by changing a storage slot, an external variable (like a timestamp) or a storage variable included in a separate contract
+- Upgrading the contract's implementation to a different bytecode right before the target contract is executed
+
+These are not all the ways the apparent contract execution can be unclear or misleading compared to the actual execution path and behavior.
+
+Because the EVM offers an (almost) Turing-complete environment, it's virtually impossible to list all the ways the contract can trick an inexperienced observer into thinking it will not be malicious.
+
+This, combined with the fact that some of the contracts can be upgradable and transaction reordering is a reality, can trick even the most experienced observer.
+
+This is why there is a lot of trust the user has to put in the executed target and the actors who can upgrade parts of the system.
+
+### User Interface
+
+The voting process is another critical trustworthy part of the system that the users will put trust in. Even though they can verify on-chain that their votes will behave in a certain way, most of the users will not do that and will trust the web interface. This is because it's more complicated and tedious to do your own verifying. Thus, most of the users will trust the information relayed by the web interface.
+
+The web interface inherently becomes a trust point between the system and the users.
+
+The will also be other user interfaces the token holders will need to trust.
 
 ## Issues
 
@@ -109,7 +141,7 @@ sol2uml ./code/contracts
 
 ![Image](./static/diagrams/sol2uml_contract_diagram.svg)
 
-### Sūrya
+### Surya
 
 Sūrya is a utility tool for smart contract systems. It provides a number of visual outputs and information about the structure of smart contracts. It also supports querying the function call graph in multiple ways to aid in the manual inspection and control flow analysis of contracts.
 
