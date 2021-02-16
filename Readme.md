@@ -57,10 +57,10 @@
      - [User Interface](#user-interface)
  - [Issues](#issues)
      - [[CommitteeTimelock] - Emits event even if the transaction was already queued](#committeetimelock---emits-event-even-if-the-transaction-was-already-queued)
-     - [[CommitteeTimelock] - Can omit the events from the contract implementation](#committeetimelock---can-omit-the-events-from-the-contract-implementation)
-     - [[CommitteeTimelock] - The computed txHash should not be considered unique for an execution](#committeetimelock---the-computed-txhash-should-not-be-considered-unique-for-an-execution)
      - [The voting period is shorter than 3 days](#the-voting-period-is-shorter-than-3-days)
+     - [[CommitteeTimelock] - Can omit the events from the contract implementation](#committeetimelock---can-omit-the-events-from-the-contract-implementation)
      - [[CommitteeTimelock] - update require err message to reflect condition](#committeetimelock---update-require-err-message-to-reflect-condition)
+     - [[CommitteeTimelock] - The computed txHash should not be considered unique for an execution](#committeetimelock---the-computed-txhash-should-not-be-considered-unique-for-an-execution)
  - [Artifacts](#artifacts)
      - [UML Diagram](#uml-diagram)
      - [Surya](#surya)
@@ -84,8 +84,8 @@
 
 | SEVERITY       |    OPEN    |    CLOSED    |
 |----------------|:----------:|:------------:|
-|  Informational  |  3  |  0  |
-|  Minor  |  2  |  0  |
+|  Informational  |  1  |  0  |
+|  Minor  |  4  |  0  |
 |  Medium  |  0  |  0  |
 |  Major  |  0  |  0  |
 
@@ -259,6 +259,45 @@ require(queuedTransactions[txHash] == false, "CommitteeTimelock::queueTransactio
 ---
 
 
+### [The voting period is shorter than 3 days](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
+
+**Description**
+
+The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 2 days to veto a token allocation: 
+
+* Committee timelock has a 7 days execution delay
+* GovernorAlpha has a 3 day voting period
+* Indexed timelock has a 2 day execution delay
+
+Compared to Indexed and Committee timelocks, which measure time in days, [GovernorAlpha.sol](https://github.com/indexed-finance/governance/blob/7473af351c9c38d12bb3741023b749442ef8d763/contracts/governance/GovernorAlpha.sol#L12-L13) measures time as the number of blocks mined since the start of a vote and assumes a block is mined every 15 seconds:
+
+```solidity
+  /// @dev The voting period which will be set after setVotingPeriodAfter has passed.
+  uint256 public constant permanentVotingPeriod = 17_280; // ~3 days in blocks (assuming 15s blocks)
+```
+
+Currently, we have the following average block times:
+* past 12 months: avg 13.11 seconds (range of minimum: 12.83 / maximum: 13.53 seconds)
+* past 3 months: avg 13.08 seconds
+
+Taking the past 3 months as a point of reference we get the following figures:
+
+<img width="332" alt="Screenshot 2021-02-12 at 15 46 07" src="https://user-images.githubusercontent.com/342638/107747075-76511e80-6d49-11eb-8343-38afe1cb29c1.png">
+
+This means that, in reality, NDX token holders currently have 2.6 days or just under 63 hours to pass a vote to veto a token allocation. This difference can confuse and potentially stop some users from acting in time to veto proposals if not properly communicated.
+
+**Recommendation**
+
+It might be worth ensuring that users understand that the voting period is less than 3 days so that they don't miss out on vetoing undesirable proposals.
+
+Alternatively, expressing the time intervals as timestamps will ensure the time intervals are precise and predictable.
+
+
+
+---
+
+
 ### [[CommitteeTimelock] - Can omit the events from the contract implementation](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/2)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
@@ -389,6 +428,35 @@ Remove the event definition from the `CommitteeTimelock` implementation which sh
 ---
 
 
+### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
+
+**Description**
+
+The `require` error message does not mention `superUser` although it's one of the OR conditions in this modifier.
+
+
+[code/contracts/committee/CommitteeTimelock.sol#L59-L65](https://github.com/monoceros-alpha/review-indexed-sigmacomittee-2021-02/blob/4c772f1edb078db49a4b441fe39e6efa6dc7f653/code/contracts/committee/CommitteeTimelock.sol#L59-L65)
+```solidity
+  modifier isAdmin {
+    require(
+      msg.sender == admin || msg.sender == superUser,
+      "CommitteeTimelock::isAdmin: Call must come from admin."
+    );
+    _;
+  }
+```
+
+
+**Recommendation**
+
+Update the error message to: `Call must come from admin or superUser.`
+
+
+
+---
+
+
 ### [[CommitteeTimelock] - The computed `txHash` should not be considered unique for an execution](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/5)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
 
@@ -464,79 +532,6 @@ Not only 2 different `txHashes` can exist for the same execution (because the si
 - Solidity accepts garbage data after all needed arguments were successfully parsed
 - Address arguments are enclosed in 32 bytes, but only 20 bytes are significant, the first 12 bytes are erased when Solidity parses that argument; any bytes within the 12 bytes will change the hash, but not change the execution
 - Strings have a length attached but enclosed in 32-byte blocks; any bytes after the specified length are ignored
-
-**Recommendation**
-
-It remains unclear
-
-**[optional] References**
-
-
----
-
-
-### [The voting period is shorter than 3 days](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4)
-![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
-
-**Description**
-
-The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 2 days to veto a token allocation: 
-
-* Committee timelock has a 7 days execution delay
-* GovernorAlpha has a 3 day voting period
-* Indexed timelock has a 2 day execution delay
-
-Compared to Indexed and Committee timelocks, which measure time in days, [GovernorAlpha.sol](https://github.com/indexed-finance/governance/blob/7473af351c9c38d12bb3741023b749442ef8d763/contracts/governance/GovernorAlpha.sol#L12-L13) measures time as the number of blocks mined since the start of a vote and assumes a block is mined every 15 seconds:
-
-```solidity
-  /// @dev The voting period which will be set after setVotingPeriodAfter has passed.
-  uint256 public constant permanentVotingPeriod = 17_280; // ~3 days in blocks (assuming 15s blocks)
-```
-
-Currently, we have the following average block times:
-* past 12 months: avg 13.11 seconds (range of minimum: 12.83 / maximum: 13.53 seconds)
-* past 3 months: avg 13.08 seconds
-
-Taking the past 3 months as a point of reference we get the following figures:
-
-<img width="332" alt="Screenshot 2021-02-12 at 15 46 07" src="https://user-images.githubusercontent.com/342638/107747075-76511e80-6d49-11eb-8343-38afe1cb29c1.png">
-
-This means that, in reality, NDX token holders currently have 2.6 days or just under 63 hours to pass a vote to veto a token allocation. This difference can confuse and potentially stop some users from acting in time to veto proposals if not properly communicated.
-
-**Recommendation**
-
-It might be worth ensuring that users understand that the voting period is less than 3 days so that they don't miss out on vetoing undesirable proposals.
-
-Alternatively, expressing the time intervals as timestamps will ensure the time intervals are precise and predictable.
-
-
-
----
-
-
-### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
-![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Informational](https://img.shields.io/static/v1?label=Severity&message=Informational&color=34C759&style=flat-square)
-
-**Description**
-
-The `require` error message does not mention `superUser` although it's one of the OR conditions in this modifier.
-
-
-[code/contracts/committee/CommitteeTimelock.sol#L59-L65](https://github.com/monoceros-alpha/review-indexed-sigmacomittee-2021-02/blob/4c772f1edb078db49a4b441fe39e6efa6dc7f653/code/contracts/committee/CommitteeTimelock.sol#L59-L65)
-```solidity
-  modifier isAdmin {
-    require(
-      msg.sender == admin || msg.sender == superUser,
-      "CommitteeTimelock::isAdmin: Call must come from admin."
-    );
-    _;
-  }
-```
-
-
-**Recommendation**
-
-Update the error message to: `Call must come from admin or superUser.`
 
 
 

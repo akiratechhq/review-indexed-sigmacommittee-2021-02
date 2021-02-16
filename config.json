@@ -126,7 +126,7 @@
             "assignee": null,
             "assignees": [],
             "author_association": "CONTRIBUTOR",
-            "body": "**Description**\r\n\r\nIn the `CommitteeTimelock` contract, an admin or a superUser can queue an execution by calling `queueTransaction`.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L116-L122\r\n\r\nThe arguments are packed together using `abi.encode`, and a `keccak256` is applied on top of the encoding.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L128\r\n\r\nThe computed `txHash` is then saved in a mapping named `queuedTransactions`.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L67\r\n\r\nThe execution can be run by calling `executeTransaction` and specifying again all of the necessary arguments (previously used to compute `txHash`).\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L148-L154\r\n\r\nIf the queued execution passes all checks, it will be run, by internally calling `_executeTransaction`.\r\n\r\nThe internal method `_executeTransaction` checks if a function signature was provided, and if none exists, it assumes the `bytes memory data` already contains the function selector.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L209-L213\r\n\r\nThis means that for the same execution, 2 different `txHashes` can exist, one with the `signature` specified, the other one with the signature contained in the `data` argument.\r\n\r\nNot only 2 different `txHashes` can exist for the same execution (because the signature can be included in the `data` argument), but also ABI encoding makes it possible to decode multiple different byte arrays to the same arguments. This is possible because but not only:\r\n- ABI encoding is not very strict\r\n- Solidity accepts garbage data after all needed arguments were successfully parsed\r\n- Address arguments are enclosed in 32 bytes, but only 20 bytes are significant, the first 12 bytes are erased when Solidity parses that argument; any bytes within the 12 bytes will change the hash, but not change the execution\r\n- Strings have a length attached but enclosed in 32-byte blocks; any bytes after the specified length are ignored\r\n\r\n**Recommendation**\r\n\r\nIt remains unclear\r\n\r\n**[optional] References**\r\n",
+            "body": "**Description**\r\n\r\nIn the `CommitteeTimelock` contract, an admin or a superUser can queue an execution by calling `queueTransaction`.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L116-L122\r\n\r\nThe arguments are packed together using `abi.encode`, and a `keccak256` is applied on top of the encoding.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L128\r\n\r\nThe computed `txHash` is then saved in a mapping named `queuedTransactions`.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L67\r\n\r\nThe execution can be run by calling `executeTransaction` and specifying again all of the necessary arguments (previously used to compute `txHash`).\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L148-L154\r\n\r\nIf the queued execution passes all checks, it will be run, by internally calling `_executeTransaction`.\r\n\r\nThe internal method `_executeTransaction` checks if a function signature was provided, and if none exists, it assumes the `bytes memory data` already contains the function selector.\r\n\r\nhttps://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/blob/858ff477bdacb4a32e5b1f5e6bac122e25581992/code/contracts/committee/CommitteeTimelock.sol#L209-L213\r\n\r\nThis means that for the same execution, 2 different `txHashes` can exist, one with the `signature` specified, the other one with the signature contained in the `data` argument.\r\n\r\nNot only 2 different `txHashes` can exist for the same execution (because the signature can be included in the `data` argument), but also ABI encoding makes it possible to decode multiple different byte arrays to the same arguments. This is possible because but not only:\r\n- ABI encoding is not very strict\r\n- Solidity accepts garbage data after all needed arguments were successfully parsed\r\n- Address arguments are enclosed in 32 bytes, but only 20 bytes are significant, the first 12 bytes are erased when Solidity parses that argument; any bytes within the 12 bytes will change the hash, but not change the execution\r\n- Strings have a length attached but enclosed in 32-byte blocks; any bytes after the specified length are ignored\r\n\r\n",
             "closed_at": null,
             "comments": 0,
             "comments_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/5/comments",
@@ -163,7 +163,7 @@
             "repository_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02",
             "state": "open",
             "title": "[CommitteeTimelock] - The computed `txHash` should not be considered unique for an execution",
-            "updated_at": "2021-02-15T15:42:39Z",
+            "updated_at": "2021-02-16T10:36:06Z",
             "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/5",
             "user": {
                 "avatar_url": "https://avatars.githubusercontent.com/u/547012?v=4",
@@ -201,13 +201,13 @@
             "id": 807060590,
             "labels": [
                 {
-                    "color": "34C759",
+                    "color": "FFCC00",
                     "default": false,
                     "description": null,
-                    "id": 2731084016,
-                    "name": "Informational",
-                    "node_id": "MDU6TGFiZWwyNzMxMDg0MDE2",
-                    "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Informational"
+                    "id": 2731084062,
+                    "name": "Minor",
+                    "node_id": "MDU6TGFiZWwyNzMxMDg0MDYy",
+                    "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Minor"
                 },
                 {
                     "color": "667788",
@@ -228,7 +228,7 @@
             "repository_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02",
             "state": "open",
             "title": "The voting period is shorter than 3 days",
-            "updated_at": "2021-02-15T15:41:44Z",
+            "updated_at": "2021-02-16T10:37:13Z",
             "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4",
             "user": {
                 "avatar_url": "https://avatars.githubusercontent.com/u/342638?v=4",
@@ -340,6 +340,15 @@
                     "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Informational"
                 },
                 {
+                    "color": "FFCC00",
+                    "default": false,
+                    "description": null,
+                    "id": 2731084062,
+                    "name": "Minor",
+                    "node_id": "MDU6TGFiZWwyNzMxMDg0MDYy",
+                    "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Minor"
+                },
+                {
                     "color": "667788",
                     "default": false,
                     "description": null,
@@ -358,7 +367,7 @@
             "repository_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02",
             "state": "open",
             "title": "[CommitteeTimelock] - update `require` err message to reflect condition",
-            "updated_at": "2021-02-11T02:19:23Z",
+            "updated_at": "2021-02-16T10:37:51Z",
             "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1",
             "user": {
                 "avatar_url": "https://avatars.githubusercontent.com/u/342638?v=4",
