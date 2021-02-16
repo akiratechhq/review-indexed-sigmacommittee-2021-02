@@ -366,8 +366,8 @@
             "performed_via_github_app": null,
             "repository_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02",
             "state": "open",
-            "title": "[CommitteeTimelock] - update `require` err message to reflect condition",
-            "updated_at": "2021-02-16T10:37:51Z",
+            "title": "[CommitteeTimelock] - Update `require` error message to reflect condition",
+            "updated_at": "2021-02-16T10:51:31Z",
             "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1",
             "user": {
                 "avatar_url": "https://avatars.githubusercontent.com/u/342638?v=4",

@@ -59,7 +59,7 @@
      - [The voting period is shorter than 3 days](#the-voting-period-is-shorter-than-3-days)
      - [[CommitteeTimelock] - Emits event even if the transaction was already queued](#committeetimelock---emits-event-even-if-the-transaction-was-already-queued)
      - [[CommitteeTimelock] - Can omit the events from the contract implementation](#committeetimelock---can-omit-the-events-from-the-contract-implementation)
-     - [[CommitteeTimelock] - update require err message to reflect condition](#committeetimelock---update-require-err-message-to-reflect-condition)
+     - [[CommitteeTimelock] - Update require error message to reflect condition](#committeetimelock---update-require-error-message-to-reflect-condition)
      - [[CommitteeTimelock] - The computed txHash should not be considered unique for an execution](#committeetimelock---the-computed-txhash-should-not-be-considered-unique-for-an-execution)
  - [Artifacts](#artifacts)
      - [Ownership and control flow](#ownership-and-control-flow)
@@ -429,7 +429,7 @@ Remove the event definition from the `CommitteeTimelock` implementation which sh
 ---
 
 
-### [[CommitteeTimelock] - update `require` err message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
+### [[CommitteeTimelock] - Update `require` error message to reflect condition](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/1)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
 **Description**
