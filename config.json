@@ -201,13 +201,13 @@
             "id": 807060590,
             "labels": [
                 {
-                    "color": "FFCC00",
+                    "color": "FF9500",
                     "default": false,
                     "description": null,
-                    "id": 2731084062,
-                    "name": "Minor",
-                    "node_id": "MDU6TGFiZWwyNzMxMDg0MDYy",
-                    "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Minor"
+                    "id": 2731084119,
+                    "name": "Medium",
+                    "node_id": "MDU6TGFiZWwyNzMxMDg0MTE5",
+                    "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/labels/Medium"
                 },
                 {
                     "color": "667788",
@@ -228,7 +228,7 @@
             "repository_url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02",
             "state": "open",
             "title": "The voting period is shorter than 3 days",
-            "updated_at": "2021-02-16T10:37:13Z",
+            "updated_at": "2021-02-16T10:50:35Z",
             "url": "https://api.github.com/repos/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4",
             "user": {
                 "avatar_url": "https://avatars.githubusercontent.com/u/342638?v=4",

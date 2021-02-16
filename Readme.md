@@ -56,12 +56,13 @@
      - [Target execution](#target-execution)
      - [User Interface](#user-interface)
  - [Issues](#issues)
-     - [[CommitteeTimelock] - Emits event even if the transaction was already queued](#committeetimelock---emits-event-even-if-the-transaction-was-already-queued)
      - [The voting period is shorter than 3 days](#the-voting-period-is-shorter-than-3-days)
+     - [[CommitteeTimelock] - Emits event even if the transaction was already queued](#committeetimelock---emits-event-even-if-the-transaction-was-already-queued)
      - [[CommitteeTimelock] - Can omit the events from the contract implementation](#committeetimelock---can-omit-the-events-from-the-contract-implementation)
      - [[CommitteeTimelock] - update require err message to reflect condition](#committeetimelock---update-require-err-message-to-reflect-condition)
      - [[CommitteeTimelock] - The computed txHash should not be considered unique for an execution](#committeetimelock---the-computed-txhash-should-not-be-considered-unique-for-an-execution)
  - [Artifacts](#artifacts)
+     - [Ownership and control flow](#ownership-and-control-flow)
      - [UML Diagram](#uml-diagram)
      - [Surya](#surya)
      - [Tests](#tests)
@@ -85,8 +86,8 @@
 | SEVERITY       |    OPEN    |    CLOSED    |
 |----------------|:----------:|:------------:|
 |  Informational  |  1  |  0  |
-|  Minor  |  4  |  0  |
-|  Medium  |  0  |  0  |
+|  Minor  |  3  |  0  |
+|  Medium  |  1  |  0  |
 |  Major  |  0  |  0  |
 
 ## Executive summary
@@ -177,6 +178,45 @@ The will also be other user interfaces the token holders will need to trust.
 ## Issues
 
 
+### [The voting period is shorter than 3 days](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4)
+![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Medium](https://img.shields.io/static/v1?label=Severity&message=Medium&color=FF9500&style=flat-square)
+
+**Description**
+
+The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 2 days to veto a token allocation: 
+
+* Committee timelock has a 7 days execution delay
+* GovernorAlpha has a 3 day voting period
+* Indexed timelock has a 2 day execution delay
+
+Compared to Indexed and Committee timelocks, which measure time in days, [GovernorAlpha.sol](https://github.com/indexed-finance/governance/blob/7473af351c9c38d12bb3741023b749442ef8d763/contracts/governance/GovernorAlpha.sol#L12-L13) measures time as the number of blocks mined since the start of a vote and assumes a block is mined every 15 seconds:
+
+```solidity
+  /// @dev The voting period which will be set after setVotingPeriodAfter has passed.
+  uint256 public constant permanentVotingPeriod = 17_280; // ~3 days in blocks (assuming 15s blocks)
+```
+
+Currently, we have the following average block times:
+* past 12 months: avg 13.11 seconds (range of minimum: 12.83 / maximum: 13.53 seconds)
+* past 3 months: avg 13.08 seconds
+
+Taking the past 3 months as a point of reference we get the following figures:
+
+<img width="332" alt="Screenshot 2021-02-12 at 15 46 07" src="https://user-images.githubusercontent.com/342638/107747075-76511e80-6d49-11eb-8343-38afe1cb29c1.png">
+
+This means that, in reality, NDX token holders currently have 2.6 days or just under 63 hours to pass a vote to veto a token allocation. This difference can confuse and potentially stop some users from acting in time to veto proposals if not properly communicated.
+
+**Recommendation**
+
+It might be worth ensuring that users understand that the voting period is less than 3 days so that they don't miss out on vetoing undesirable proposals.
+
+Alternatively, expressing the time intervals as timestamps will ensure the time intervals are precise and predictable.
+
+
+
+---
+
+
 ### [[CommitteeTimelock] - Emits event even if the transaction was already queued](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/6)
 ![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
 
@@ -254,45 +294,6 @@ Add a check in the method `queueTransaction` to ensure the transaction was not a
 ```solidity
 require(queuedTransactions[txHash] == false, "CommitteeTimelock::queueTransaction: Transaction already queued.")
 ```
-
-
----
-
-
-### [The voting period is shorter than 3 days](https://github.com/monoceros-alpha/review-indexed-sigmacommittee-2021-02/issues/4)
-![Issue status: Open](https://img.shields.io/static/v1?label=Status&message=Open&color=5856D6&style=flat-square) ![Minor](https://img.shields.io/static/v1?label=Severity&message=Minor&color=FFCC00&style=flat-square)
-
-**Description**
-
-The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 2 days to veto a token allocation: 
-
-* Committee timelock has a 7 days execution delay
-* GovernorAlpha has a 3 day voting period
-* Indexed timelock has a 2 day execution delay
-
-Compared to Indexed and Committee timelocks, which measure time in days, [GovernorAlpha.sol](https://github.com/indexed-finance/governance/blob/7473af351c9c38d12bb3741023b749442ef8d763/contracts/governance/GovernorAlpha.sol#L12-L13) measures time as the number of blocks mined since the start of a vote and assumes a block is mined every 15 seconds:
-
-```solidity
-  /// @dev The voting period which will be set after setVotingPeriodAfter has passed.
-  uint256 public constant permanentVotingPeriod = 17_280; // ~3 days in blocks (assuming 15s blocks)
-```
-
-Currently, we have the following average block times:
-* past 12 months: avg 13.11 seconds (range of minimum: 12.83 / maximum: 13.53 seconds)
-* past 3 months: avg 13.08 seconds
-
-Taking the past 3 months as a point of reference we get the following figures:
-
-<img width="332" alt="Screenshot 2021-02-12 at 15 46 07" src="https://user-images.githubusercontent.com/342638/107747075-76511e80-6d49-11eb-8343-38afe1cb29c1.png">
-
-This means that, in reality, NDX token holders currently have 2.6 days or just under 63 hours to pass a vote to veto a token allocation. This difference can confuse and potentially stop some users from acting in time to veto proposals if not properly communicated.
-
-**Recommendation**
-
-It might be worth ensuring that users understand that the voting period is less than 3 days so that they don't miss out on vetoing undesirable proposals.
-
-Alternatively, expressing the time intervals as timestamps will ensure the time intervals are precise and predictable.
-
 
 
 ---
@@ -538,7 +539,13 @@ Not only 2 different `txHashes` can exist for the same execution (because the si
 ---
 
 
+<div style="page-break-after: always"></div>
+
 ## Artifacts
+
+### Ownership and control flow
+
+![Image](./static/diagrams/ownership_control_flow.png)
 
 ### UML Diagram
 
