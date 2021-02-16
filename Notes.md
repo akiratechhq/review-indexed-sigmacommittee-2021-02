@@ -1,0 +1,5 @@
+  - [ ] [PR #13](https://github.com/indexed-finance/sigma-core/pull/13)
+  - [ ] [PR #15](https://github.com/indexed-finance/sigma-core/pull/15)
+  - [x] [PR #11](https://github.com/indexed-finance/sigma-core/pull/11)
+  - [x] [PR #7](https://github.com/indexed-finance/sigma-core/pull/7)
+  - [x] [PR #10](https://github.com/indexed-finance/sigma-core/pull/10)
