@@ -124,57 +124,691 @@ The will also be other user interfaces the token holders will need to trust.
 
 ## Artifacts
 
+### UML Diagram
+
+Generated with [sol2uml](https://github.com/naddison36/sol2uml):
+
+```bash
+npm link sol2uml --only=production
+sol2uml ./code/contracts
+```
+
+![Image](./static/diagrams/sol2uml_contract_diagram.svg)
+
 ### Sūrya
 
 Sūrya is a utility tool for smart contract systems. It provides a number of visual outputs and information about the structure of smart contracts. It also supports querying the function call graph in multiple ways to aid in the manual inspection and control flow analysis of contracts.
 
-<!-- **Contracts Description Table**
-
-```text
-surya mdreport report.md Contract.sol
-```
-
--->
-
 #### Graphs
 
-<!-- ***Contract***
+##### _CommitteeProxy_
 
-```text
-surya graph Contract.sol | dot -Tpng > ./static/Contract_graph.png
-```
+![CommitteeProxy](./static/diagrams/surya_CommitteeProxy.png)
 
-![Contract Graph](./static/Contract_graph.png)
+![CommitteeProxy Inheritance](./static/diagrams/surya_inheritance_CommitteeProxy.png)
 
-```text
-surya inheritance Contract.sol | dot -Tpng > ./static/Contract_inheritance.png
-```
 
-![Contract Inheritance](./static/Contract_inheritance.png)
+##### _CommitteeTimelock_
 
-```text
-Use Solidity Visual Auditor
-```
+![CommitteeTimelock](./static/diagrams/surya_CommitteeTimelock.png)
 
-![Contract UML](./static/Contract_uml.png) -->
+![CommitteeTimelock Inheritance](./static/diagrams/surya_inheritance_CommitteeTimelock.png)
 
-#### Describe
 
-<!-- ```text
-$ npx surya describe ./Contract.sol
-``` -->
+##### _MarketCapSortedTokenCategories_
 
-### Coverage
+![MarketCapSortedTokenCategories](./static/diagrams/surya_MarketCapSortedTokenCategories.png)
 
-<!-- ```text
-$ npm run coverage
-``` -->
+![MarketCapSortedTokenCategories Inheritance](./static/diagrams/surya_inheritance_MarketCapSortedTokenCategories.png)
+
+
+##### _MarketCapSqrtController_
+
+![MarketCapSqrtController](./static/diagrams/surya_MarketCapSqrtController.png)
+
+![MarketCapSqrtController Inheritance](./static/diagrams/surya_inheritance_MarketCapSqrtController.png)
+
+
+##### _PoolFactory_
+
+![PoolFactory](./static/diagrams/surya_PoolFactory.png)
+
+![PoolFactory Inheritance](./static/diagrams/surya_inheritance_PoolFactory.png)
+
+
+##### _PoolInitializer_
+
+![PoolInitializer](./static/diagrams/surya_PoolInitializer.png)
+
+![PoolInitializer Inheritance](./static/diagrams/surya_inheritance_PoolInitializer.png)
+
+
+##### _UnboundTokenSeller_
+
+![UnboundTokenSeller](./static/diagrams/surya_UnboundTokenSeller.png)
+
+![UnboundTokenSeller Inheritance](./static/diagrams/surya_inheritance_UnboundTokenSeller.png)
+
 
 ### Tests
 
-<!-- ```text
-$ npx buidler test
-``` -->
+We ran tests on node version `v14.8.0` and solidity `0.6.12`. Compiling the contracts resulted in some warnings that are not of concern to the security of the project.
+
+```text
+$ node --version
+v14.8.0
+$ cd code
+$ npm run test
+
+> @indexed-finance/indexed-core@1.0.0 test
+> buidler test
+
+(node:44972) Warning: Accessing non-existent property 'VERSION' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44972) Warning: Accessing non-existent property 'INVALID_ALT_NUMBER' of module exports inside circular dependency
+(node:44972) Warning: Accessing non-existent property 'INVALID_ALT_NUMBER' of module exports inside circular dependency
+(node:44972) Warning: Accessing non-existent property 'INVALID_ALT_NUMBER' of module exports inside circular dependency
+(node:44972) Warning: Accessing non-existent property 'INVALID_ALT_NUMBER' of module exports inside circular dependency
+Compiling...
+
+
+@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/balancer/BMath.sol:119:13: Warning: Only state variables can have a docstring. This will be disallowed in 0.7.0.
+    uint256 normalizedWeight = bdiv(tokenWeightIn, totalWeight);
+            ^--------------^
+
+
+
+contracts/interfaces/ICommitteeTimelock.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/LiquidityAdder.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/MockBorrower.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/MockUnbindSourcePool.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/MockUnbindTokenHandler.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/OracleFallthrough.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/tests/SellerTest.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/tests/util/Diff.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/tests/util/TestOrder.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/tests/util/TestTokenMarkets.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/mocks/tests/util/TestTokens.sol: Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+
+
+
+contracts/committee/CommitteeTimelock.sol:18:1: Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+contract CommitteeTimelock is ICommitteeTimelock {
+^ (Relevant source part starts here and spans across multiple lines).
+contracts/committee/CommitteeTimelock.sol:75:3: The payable fallback function is defined here.
+  fallback() external payable {}
+  ^----------------------------^
+
+Compiled 62 contracts successfully
+
+
+  CommitteeProxy.sol
+    Constructor & Settings
+      ✓ committee
+      ✓ owner
+    setCommittee()
+      ✓ Reverts if not called by owner
+      ✓ Sets the committee
+    executeTransaction()
+      ✓ Reverts if not called by committee
+      ✓ Executes transaction with function signature (44ms)
+      ✓ Executes transaction without function signature (43ms)
+      ✓ Reverts if the call fails
+
+  CommitteeTimelock.sol
+    Constructor & Settings
+      ✓ admin
+      ✓ superUser
+      ✓ delay
+      ✓ GRACE_PERIOD
+      ✓ MINIMUM_DELAY (45ms)
+      ✓ MAXIMUM_DELAY
+    queueTransaction()
+      ✓ reverts if not an admin
+      ✓ can be called by superUser
+      ✓ can be called by admin (41ms)
+    executeTransaction()
+      ✓ reverts if not an admin
+      ✓ reverts if transaction with same txHash not queued
+      ✓ reverts if timelock has not passed
+      ✓ reverts if tx call fails
+      ✓ can execute after the timelock passes (64ms)
+    sudo()
+      ✓ reverts if not called by superUser
+      ✓ reverts if tx call fails (39ms)
+      ✓ allows superUser to immediately execute a tx (53ms)
+
+  IndexPool.sol
+    Constructor & Settings
+      ✓ isPublicSwap()
+      ✓ getSwapFee()
+      ✓ getController()
+      ✓ getExitFeeRecipient()
+    setExitFeeRecipient
+      ✓ Reverts if not called by current fee recipient
+      ✓ Updates the fee recipient
+    Control & Public
+      ✓ Functions with _control_ role are only callable by controller
+      ✓ Functions with _public_ modifier are only callable after initialization (122ms)
+    configure(): fail
+      ✓ Reverts if controller is already set
+      ✓ Reverts if provided controller address is zero (89ms)
+    initialize(): fail
+      ✓ Reverts if the pool is already initialized
+      ✓ Reverts if array lengths do not match (155ms)
+      ✓ Reverts if less than 2 tokens are provided
+      ✓ Reverts if more than 10 tokens are provided
+      ✓ Reverts if any denorm < MIN_WEIGHT
+      ✓ Reverts if any denorm > MAX_WEIGHT (47ms)
+      ✓ Reverts if any balance < MIN_BALANCE
+      ✓ Reverts if total weight > maximum (45ms)
+    gulp()
+      ✓ Sends unbound tokens to handler
+      ✓ Updates balance for bound tokens (44ms)
+      ✓ Updates balance for uninitialized tokens (56ms)
+      ✓ Initializes token if minimumm balance is hit (40ms)
+    setSwapFee()
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if swapFee < 0.0001%
+      ✓ Reverts if swapFee > 10%
+      ✓ Sets swap fee between min and max
+    setPublicSwap()
+      ✓ Freezes public swaps
+      ✓ Disables functions with _public
+      ✓ Enables public swaps
+    setMinimumBalance()
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if token is not bound
+      ✓ Reverts if token is initialized
+      ✓ Sets minimum balance of uninitialized token (70ms)
+    Token Queries
+      ✓ isBound()
+      ✓ getNumTokens()
+      ✓ getCurrentTokens()
+      ✓ getCurrentDesiredTokens() (69ms)
+      ✓ getDenormalizedWeight(): success
+      ✓ getDenormalizedWeight(): fail
+      ✓ getTotalDenormalizedWeight()
+      ✓ getBalance(): success
+      ✓ getBalance(): reverts if token is not bound
+      ✓ getMinimumBalance(): reverts if token is not bound
+      ✓ getMinimumBalance(): reverts if token is ready
+      ✓ getUsedBalance(): returns actual balance for initialized token
+      ✓ getUsedBalance(): returns minimum balance for uninitialized token (74ms)
+      ✓ getUsedBalance(): reverts if token is not bound
+    getTokenRecord()
+      ✓ Returns expected record for bound token
+      ✓ Reverts if token is not bound
+    extrapolatePoolValueFromToken()
+      ✓ Succeeds if any token is ready and desired
+      ✓ Reverts if no tokens are both ready and desired
+    getSpotPrice()
+      ✓ Reverts if either token is unbound
+      ✓ Prices initialized tokens normally (56ms)
+      ✓ Reverts if tokenOut is not ready (91ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens
+    swapExactAmountIn()
+      ✓ Reverts if either token is unbound
+      ✓ Reverts if input amount > 1/2 of balance
+      ✓ Reverts if spotPriceBefore is lower than maxPrice (67ms)
+      ✓ Reverts if spotPriceAfter is lower than maxPrice (170ms)
+      ✓ Reverts if tokenAmountOut < minAmountOut (39ms)
+      ✓ Prices initialized tokens normally (226ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens, and uses updated weight for spotPriceAfter (194ms)
+      ✓ Reverts if tokenOut is uninitialized (80ms)
+    swapExactAmountOut()
+      ✓ Reverts if either token is unbound
+      ✓ Reverts if output amount > 1/3 of balance
+      ✓ Reverts if spot price is lower than maxPrice (44ms)
+      ✓ Prices initialized tokens normally (432ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens, and uses updated weight for spotPriceAfter (190ms)
+      ✓ Reverts if tokenOut is uninitialized
+    joinswapExternAmountIn()
+      ✓ Reverts if tokenAmountIn = 0
+      ✓ Reverts if tokenAmountIn > balanceIn / 2
+      ✓ Reverts if poolAmountOut < minPoolAmountOut
+      ✓ Prices initialized tokens normally
+      ✓ Prices uninitialized tokens using minimum balance and weight (97ms)
+    joinswapPoolAmountOut()
+      ✓ Reverts if tokenAmountIn > balanceIn / 2
+      ✓ Reverts if tokenAmountIn > maxAmountIn
+      ✓ Prices initialized tokens normally (57ms)
+      ✓ Prices uninitialized tokens using minimum balance and weight (115ms)
+    joinPool()
+      ✓ Reverts if invalid array length is given
+      ✓ Reverts if zero tokens are requested
+      ✓ Reverts if tokenAmountIn > maxAmountIn
+      ✓ Prices initialized tokens normally (111ms)
+      ✓ Prices uninitialized tokens using minimum balance and weight (232ms)
+    exitswapPoolAmountIn()
+      ✓ Prices initialized tokens normally (61ms)
+      ✓ Reverts if unbound token is given
+      ✓ Reverts if tokenAmountOut < minAmountOut
+      ✓ Reverts if tokenAmountOut > balanceOut / 3 (60ms)
+      ✓ Reverts if uninitialized token is given (79ms)
+    exitswapExternAmountOut()
+      ✓ Prices initialized tokens normally (167ms)
+      ✓ Reverts if unbound token is given
+      ✓ Reverts if poolRatio = 0
+      ✓ Reverts if poolAmountIn > maxPoolAmountIn (43ms)
+      ✓ Reverts if tokenAmountOut > balanceOut / 3
+      ✓ Reverts if uninitialized token is given (61ms)
+    exitPool()
+      ✓ Prices initialized tokens normally (60ms)
+      ✓ Reverts if poolRatio = 0
+      ✓ Reverts if invalid array length is given
+      ✓ Reverts if tokenAmountOut < minAmountOut
+      ✓ Reverts if minAmountOut is not zero for uninitialized tokens (109ms)
+      ✓ Gives 0 for uninitialized tokens
+    delegateCompLikeToken()
+      ✓ delegates a comp-like token to the provided address
+
+  IndexPool.sol
+    Constructor & Settings
+      ✓ isPublicSwap()
+      ✓ getSwapFee()
+      ✓ getController()
+    Control & Public
+      ✓ Functions with _control_ role are only callable by controller
+      ✓ Functions with _public_ modifier are only callable after initialization (97ms)
+    configure(): fail
+      ✓ Reverts if controller is already set
+      ✓ Reverts if provided controller address is zero (77ms)
+    initialize(): fail
+      ✓ Reverts if the pool is already initialized
+      ✓ Reverts if array lengths do not match (282ms)
+      ✓ Reverts if less than 2 tokens are provided
+      ✓ Reverts if more than 10 tokens are provided
+      ✓ Reverts if any denorm < MIN_WEIGHT (76ms)
+      ✓ Reverts if any denorm > MAX_WEIGHT (74ms)
+      ✓ Reverts if any balance < MIN_BALANCE (80ms)
+      ✓ Reverts if total weight > maximum (112ms)
+    gulp()
+      ✓ Sends unbound tokens to handler
+      ✓ Updates balance for bound tokens
+      ✓ Updates balance for uninitialized tokens (43ms)
+      ✓ Initializes token if minimumm balance is hit (61ms)
+    setSwapFee()
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if swapFee < 0.0001%
+      ✓ Reverts if swapFee > 10%
+      ✓ Sets swap fee between min and max
+    setMinimumBalance()
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if token is not bound
+      ✓ Reverts if token is initialized
+      ✓ Sets minimum balance of uninitialized token (195ms)
+    Token Queries
+      ✓ isBound() (49ms)
+      ✓ getNumTokens()
+      ✓ getCurrentTokens()
+      ✓ getCurrentDesiredTokens() (71ms)
+      ✓ getDenormalizedWeight(): success
+      ✓ getDenormalizedWeight(): fail
+      ✓ getTotalDenormalizedWeight()
+      ✓ getBalance(): success
+      ✓ getBalance(): reverts if token is not bound
+      ✓ getMinimumBalance(): reverts if token is not bound
+      ✓ getMinimumBalance(): reverts if token is ready
+      ✓ getUsedBalance(): returns actual balance for initialized token
+      ✓ getUsedBalance(): returns minimum balance for uninitialized token (164ms)
+      ✓ getUsedBalance(): reverts if token is not bound
+    getTokenRecord()
+      ✓ Returns expected record for bound token
+      ✓ Reverts if token is not bound
+    extrapolatePoolValueFromToken()
+      ✓ Succeeds if any token is ready and desired
+      ✓ Reverts if no tokens are both ready and desired
+    getSpotPrice()
+      ✓ Reverts if either token is unbound
+      ✓ Prices initialized tokens normally (690ms)
+      ✓ Reverts if tokenOut is not ready (272ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens (93ms)
+    swapExactAmountIn()
+      ✓ Reverts if either token is unbound
+      ✓ Reverts if input amount > 1/2 of balance (63ms)
+      ✓ Reverts if spotPriceBefore is lower than maxPrice (136ms)
+      ✓ Reverts if spotPriceAfter is lower than maxPrice (406ms)
+      ✓ Reverts if tokenAmountOut < minAmountOut (125ms)
+      ✓ Prices initialized tokens normally (2321ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens, and uses updated weight for spotPriceAfter (546ms)
+      ✓ Reverts if tokenOut is uninitialized (225ms)
+    swapExactAmountOut()
+      ✓ Reverts if either token is unbound
+      ✓ Reverts if output amount > 1/3 of balance (85ms)
+      ✓ Reverts if spot price is lower than maxPrice (143ms)
+      ✓ Prices initialized tokens normally (3592ms)
+      ✓ Uses the minimum balance and weight to price uninitialized tokens, and uses updated weight for spotPriceAfter (540ms)
+      ✓ Reverts if tokenOut is uninitialized (63ms)
+    joinswapExternAmountIn()
+      ✓ Reverts if tokenAmountIn = 0
+      ✓ Reverts if tokenAmountIn > balanceIn / 2
+      ✓ Reverts if poolAmountOut < minPoolAmountOut
+      ✓ Prices initialized tokens normally (353ms)
+      ✓ Prices uninitialized tokens using minimum balance and weight (211ms)
+    joinswapPoolAmountOut()
+      ✓ Reverts if tokenAmountIn > balanceIn / 2
+      ✓ Reverts if tokenAmountIn > maxAmountIn
+      ✓ Prices initialized tokens normally
+      ✓ Prices uninitialized tokens using minimum balance and weight (200ms)
+    joinPool()
+      ✓ Reverts if invalid array length is given
+      ✓ Reverts if zero tokens are requested
+      ✓ Reverts if tokenAmountIn > maxAmountIn
+      ✓ Prices initialized tokens normally (283ms)
+      ✓ Prices uninitialized tokens using minimum balance and weight (563ms)
+    exitswapPoolAmountIn()
+      ✓ Prices initialized tokens normally (193ms)
+      ✓ Reverts if unbound token is given
+      ✓ Reverts if tokenAmountOut < minAmountOut (111ms)
+      ✓ Reverts if tokenAmountOut > balanceOut / 3 (121ms)
+      ✓ Reverts if uninitialized token is given (161ms)
+    exitswapExternAmountOut()
+      ✓ Prices initialized tokens normally (217ms)
+      ✓ Reverts if unbound token is given
+      ✓ Reverts if poolRatio = 0
+      ✓ Reverts if poolAmountIn > maxPoolAmountIn (117ms)
+      ✓ Reverts if tokenAmountOut > balanceOut / 3 (54ms)
+      ✓ Reverts if uninitialized token is given (168ms)
+    exitPool()
+      ✓ Prices initialized tokens normally (125ms)
+      ✓ Reverts if poolRatio = 0
+      ✓ Reverts if invalid array length is given
+      ✓ Reverts if tokenAmountOut < minAmountOut
+      ✓ Reverts if minAmountOut is not zero for uninitialized tokens (214ms)
+      ✓ Gives 0 for uninitialized tokens (64ms)
+
+  reweighTokens()
+    reweighTokens(): fail
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if invalid array length is given
+      ✓ Reverts if a token is not bound
+      ✓ Reverts if desiredDenorm < MIN_WEIGHT
+      ✓ Reverts if desiredDenorm > MAX_WEIGHT
+    reweighTokens(): Set one target to 0
+      ✓ Allows desired weight to be set to 0
+      Pool records match expected
+        ✓ getCurrentTokens()
+        ✓ getCurrentDesiredTokens()
+        ✓ all::record.denorm
+        ✓ all::record.desiredDenorm
+        ✓ all::record.ready
+    reweighTokens(): success
+      ✓ reweighTokens()
+      Adjust weights during swaps and joins
+        ✓ swapExactAmountIn (479ms)
+        ✓ swapExactAmountOut (504ms)
+        ✓ joinswapExternAmountIn (227ms)
+        ✓ joinswapPoolAmountOut (223ms)
+      Pool records match expected
+        ✓ getCurrentTokens()
+        ✓ getCurrentDesiredTokens()
+        ✓ all::record.denorm
+        ✓ all::record.desiredDenorm
+        ✓ all::record.ready
+    reindexTokens(): fail
+      ✓ Reverts if caller is not controller
+      ✓ Reverts if array lengths do not match
+      ✓ Reverts if minimumBalance < MIN_BALANCE
+      ✓ Reverts if desiredDenorm > MAX_WEIGHT
+    reindexTokens(): success
+      ✓ Sets desiredDenorm to MIN_WEIGHT if 0 is provided
+      ✓ Sets desiredDenorm of tokens not included in the call to zero
+      ✓ Swaps new token in until it is initialized (177ms)
+Should take 19 steps to remove
+      ✓ Swaps old token out until it is removed (699ms)
+
+  MarketCapSortedTokenCategories.sol
+    categoryIndex()
+      ✓ Sets first category ID to 1
+    updateCategoryPrices()
+      ✓ Reverts if category does not exist
+      ✓ Updates prices of tokens in category (1184ms)
+    hasCategory()
+      ✓ Returns false if category does not exist
+      ✓ Returns true if category exists
+    isTokenInCategory()
+      ✓ Reverts if invalid category ID is given
+      ✓ Returns false if token is not bound (94ms)
+      ✓ Returns true if token is bound (90ms)
+      ✓ Returns false if token is removed (189ms)
+    createCategory()
+      ✓ Reverts if caller is not owner
+      ✓ Allows owner to create a category
+    addToken()
+      ✓ Reverts if caller is not owner
+      ✓ Reverts if categoryIndex is 0
+      ✓ Reverts if categoryID > categoryIndex
+      ✓ Reverts if category is already at the maximum (3410ms)
+      ✓ Reverts if token is already bound to same category (184ms)
+      ✓ Resets the lastCategoryUpdate time (577ms)
+      ✓ Returns tokens
+    removeToken()
+      ✓ Reverts if caller is not owner
+      ✓ Reverts if categoryIndex is 0
+      ✓ Reverts if categoryID > categoryIndex
+      ✓ Reverts if category is empty
+      ✓ Reverts if token not found (152ms)
+      ✓ Resets the lastCategoryUpdate time (227ms)
+      ✓ Swaps with last token in list (3064ms)
+    addTokens()
+      ✓ Reverts if caller is not owner
+      ✓ Reverts if categoryIndex is 0
+      ✓ Reverts if categoryID > categoryIndex
+      ✓ Reverts if category would exceed maximum after adding the tokens (3115ms)
+      ✓ Reverts if any of the tokens are already bound (221ms)
+    getCategoryTokens()
+      ✓ Reverts if categoryIndex is 0
+      ✓ Reverts if categoryID > categoryIndex
+      ✓ Returns the category tokens (100ms)
+    computeAverageMarketCap()
+      ✓ Reverts if the oracle does not have a price observation in the TWAP range
+      ✓ Returns correct token market caps (968ms)
+    computeAverageMarketCaps()
+      ✓ Reverts if the oracle does not have price observations in the TWAP range
+      ✓ Returns correct token market caps (880ms)
+    getCategoryMarketCaps()
+      ✓ Reverts if the category does not exist
+      ✓ Reverts if the oracle does not have price observations in the TWAP range (122ms)
+      ✓ Returns expected market caps (762ms)
+    getTopCategoryTokens()
+      ✓ Reverts if the category does not exist
+      ✓ Reverts if size > number of category tokens (95ms)
+      ✓ Reverts if category has not been sorted recently
+      ✓ Returns top n tokens in descending order of market cap (978ms)
+    orderCategoryTokensByMarketCap()
+      ✓ Reverts if the category does not exist
+      ✓ Reverts if the oracle does not have price observations in the TWAP range (112ms)
+      ✓ Sorts the category using insertion sort (783ms)
+      ✓ Sets the last category update timestamp
+
+  MarketCapSqrtController.sol
+    Initializer & Settings
+      ✓ defaultSellerPremium(): set to 2
+      ✓ owner()
+    onlyOwner
+      ✓ All functions with onlyOwner modifier revert if caller is not owner
+    _havePool
+      ✓ All functions with _havePool modifier revert if pool address not recognized
+    setDefaultSellerPremium()
+      ✓ Reverts if premium == 0
+      ✓ Reverts if premium >= 20
+      ✓ Sets allowed premium
+    getInitialTokensAndBalances()
+      ✓ Returns the top n category tokens and target balances weighted by mcap sqrt (1617ms)
+      ✓ Reverts if any token has a target balance below the minimum
+    prepareIndexPool()
+      ✓ Reverts if size > 10 (869ms)
+      ✓ Reverts if size < 2
+      ✓ Reverts if initialWethValue >= 2^144
+      ✓ Succeeds with valid inputs (99ms)
+      ✓ Deploys the pool and initializer to the correct addresses
+      ✓ Reverts if the pool params are duplicates
+      ✓ Sets expected desired tokens and balances on pool initializer (1917ms)
+    finishPreparedIndexPool()
+      ✓ Reverts if caller is not initializer
+      ✓ Reverts if array lengths do not match (957ms)
+      ✓ Reverts if pool is already initialized (831ms)
+    updateSellerPremium()
+      ✓ Reverts if premium == 0
+      ✓ Reverts if premium >= 20
+      ✓ Sets premium within allowed range
+    setSwapFee()
+      ✓ Sets swap fee on the pool
+    reweighPool()
+      ✓ Reverts if < 2 weeks have passed
+      ✓ Reweighs the pool and sets desired weights proportional to mcap sqrts (1686ms)
+      ✓ Reverts if reweighIndex % 4 == 0 (5040ms)
+    reindexPool()
+      ✓ Reverts if < 2 weeks have passed
+      ✓ Reverts if reweighIndex % 4 != 0 (1506ms)
+      ✓ Reverts if category has not been sorted recently (6350ms)
+      ✓ Reindexes the pool with correct minimum balances and desired weights (394ms)
+    updateMinimumBalance()
+      ✓ Reverts if token is initialized
+      ✓ Updates minimum balance based on extrapolated pool value (6921ms)
+    delegateCompLikeTokenFromPool()
+      ✓ Delegates a comp-like token in an index pool
+
+  OwnableProxy.sol
+    ✓ locks the base implementation contract
+    initialize ownership
+      ✓ has null owner before initialization
+      ✓ sets owner
+      ✓ prevents initialized contract from being initialized
+    transfer ownership
+      ✓ changes owner after transfer
+      ✓ prevents non-owners from transferring
+      ✓ guards ownership against stuck state
+    renounce ownership
+      ✓ loses owner after renouncement
+      ✓ prevents non-owners from renouncement
+
+  PoolFactory.sol
+    approvePoolController()
+      ✓ Reverts if not called by owner
+      ✓ Marks account as approved controller
+    disapprovePoolController()
+      ✓ Reverts if not called by owner
+      ✓ Marks account as unapproved controller
+    deployPool()
+      ✓ Reverts if not called by approved controller
+      ✓ Deploys pool
+      ✓ Emits NewPool event with pool info
+      ✓ Stores the pool implementation ID
+    computePoolAddress()
+      ✓ Returns same address as deployment
+    isRecognizedPool()
+      ✓ Returns true for deployed pool
+      ✓ Returns false for any other account
+
+  PoolInitializer.sol
+    initialize()
+      ✓ Reverts if array lengths do not match
+      ✓ Succeeds with valid inputs on first call
+      ✓ Reverts if already initialized
+    _finished_
+      ✓ All functions with _finished_ modifier revert if the initializer is not finished
+    _not_finished_
+      ✓ All functions with _not_finished_ modifier revert if the initializer is finished (481ms)
+    isFinished()
+      ✓ Returns false before finished
+      ✓ Returns true after finished (277ms)
+    getDesiredTokens()
+      ✓ Returns expected tokens
+    getDesiredAmounts()
+      ✓ Returns remaining desired amounts (992ms)
+    getDesiredAmount()
+      ✓ Returns expected desired amount (948ms)
+    getCreditForTokens()
+      ✓ Returns the eth value of the token (791ms)
+      ✓ Reverts if the token is not desired (288ms)
+    getTotalCredit()
+      ✓ Returns total credited value (66ms)
+    getCreditOf()
+      ✓ Returns credited value for account (70ms)
+    contributeTokens(address,uint256,uint256)
+      ✓ Returns credited value (885ms)
+      ✓ Reverts if credit < minCredit (910ms)
+      ✓ Reverts if amountIn = 0 (57ms)
+      ✓ Reverts if token not needed (225ms)
+    contributeTokens(address[],uint256[],uint256)
+      ✓ Returns credited value (855ms)
+      ✓ Reverts if array lengths do not match
+      ✓ Reverts if credit < minCredit (132ms)
+      ✓ Reverts if amountIn = 0 (70ms)
+      ✓ Reverts if token not needed (169ms)
+    claimTokens()
+      ✓ Claims tokens for the caller proportional to their credits (520ms)
+    claimTokens(address)
+      ✓ Claims tokens for the provided account proportional to their credits (312ms)
+    claimTokens(address[])
+      ✓ Claims tokens for the provided accounts proportional to their credits (472ms)
+    finish()
+      ✓ Reverts if there are remaining desired amounts for any tokens (153ms)
+      ✓ Sets finished to true (178ms)
+
+  UnboundTokenSeller.sol
+    ✓ initialize()
+    ✓ init (361ms)
+    ✓ setPremiumPercent()
+    ✓ handleUnbindToken()
+    ✓ calcInGivenOut() (38ms)
+    ✓ calcOutGivenIn() (63ms)
+    ✓ swapExactTokensForTokens() (76ms)
+    ✓ swapTokensForExactTokens() (70ms)
+    ✓ executeSwapTokensForExactTokens() (114ms)
+    ✓ executeSwapExactTokensForTokens() (116ms)
+
+
+  388 passing (4m)
+```
 
 ## License
 
