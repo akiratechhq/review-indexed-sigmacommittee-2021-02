@@ -106,7 +106,7 @@ We continued to review the code, while creating an overview of the architecture 
 
 ### Day 2
 
-We realised we don't have a complete understanding of the system and how the components are glued together, and we asked the client for an additional overview of the system, specifically how the the contracts will be deployed. We received an additional document detailing the [deployment and ownership strategy][Deplyment strategy].
+Since the relationship of the new Sigma Committee contracts under audit is connected to the main Indexed Governance contracts we asked the client for an additional overview of the system, specifically how the contracts will be deployed. We received an additional document detailing the [deployment and ownership strategy][Deplyment strategy].
 
 We also asked for more time than initially estimated because we needed time to process all provided additional documentation.
 
@@ -183,7 +183,7 @@ The will also be other user interfaces the token holders will need to trust.
 
 **Description**
 
-The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 2 days to veto a token allocation: 
+The newly elected Sigma Committee will have the ability to assign rewards for liquidity mining on new pools. To do this, any new distribution will have to go through a 7 day timelock - in theory, this gives NDX token holders 3 days to veto a token allocation: 
 
 * Committee timelock has a 7 days execution delay
 * GovernorAlpha has a 3 day voting period
@@ -196,7 +196,7 @@ Compared to Indexed and Committee timelocks, which measure time in days, [Govern
   uint256 public constant permanentVotingPeriod = 17_280; // ~3 days in blocks (assuming 15s blocks)
 ```
 
-Currently, we have the following average block times:
+Currently, we have the following average block times (source [etherscan data](https://etherscan.io/chart/blocktime)):
 * past 12 months: avg 13.11 seconds (range of minimum: 12.83 / maximum: 13.53 seconds)
 * past 3 months: avg 13.08 seconds
 
